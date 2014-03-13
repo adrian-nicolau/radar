@@ -1,11 +1,18 @@
 package ro.pub.cs.radar;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,6 +20,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -32,8 +41,12 @@ public class MainActivity extends Activity {
 	private List<String> SSIDs = new ArrayList<String>();
 	private List<String> attributes = new ArrayList<String>();
 
+	private ArrayList<String> history = new ArrayList<String>();
+
 	private Handler mHandler;
-	private int mInterval = 5000; // 5 seconds
+	private int mInterval = 0;
+
+	private static final String TAG = "RSSI";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +111,35 @@ public class MainActivity extends Activity {
 		super.onResume();
 	}
 
+	@Override
+	protected void onStop() {
+
+		File logFile = new File(Environment.getExternalStorageDirectory()
+				.toString(), "rssi.txt");
+		BufferedWriter output = null;
+		Log.v(TAG, Environment.getExternalStorageDirectory().toString());
+
+		try {
+			if (!logFile.exists())
+				logFile.createNewFile();
+			output = new BufferedWriter(new FileWriter(logFile, true));
+			for (String s : history)
+				output.write(s + "\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				output.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		Toast.makeText(getApplicationContext(), "Writing levels to file..",
+				Toast.LENGTH_SHORT).show();
+		super.onStop();
+	}
+
 	Runnable mStatusChecker = new Runnable() {
 		@Override
 		public void run() {
@@ -116,8 +158,15 @@ public class MainActivity extends Activity {
 			SSIDs.clear();
 			attributes.clear();
 
+			Calendar cal = Calendar.getInstance();
+			cal.getTime();
+			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS");
+
 			wifiList = mainWifi.getScanResults();
 			for (int i = 0; i < wifiList.size(); i++) {
+				String time = sdf.format(cal.getTime());
+				history.add(time + " " + wifiList.get(i).SSID + " "
+						+ wifiList.get(i).level);
 				SSIDs.add(wifiList.get(i).SSID);
 				attributes.add(wifiList.get(i).toString().replace(", ", "\n"));
 			}
