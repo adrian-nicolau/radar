@@ -11,7 +11,7 @@ public class MapActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
-		
+
 		FrameLayout fl = (FrameLayout) findViewById(R.id.mapLayout);
 		View map = new MapView(getApplicationContext());
 		fl.addView(map);
