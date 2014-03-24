@@ -11,5 +11,6 @@
     <string name="button2">View Floor Map</string>
     <string name="map_description">Freescale 3rd floor map</string>
     <string name="done">Done</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
