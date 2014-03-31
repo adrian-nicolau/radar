@@ -1,5 +1,7 @@
 package ro.pub.cs.radar;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,14 +10,20 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.Display;
+import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.graphics.Paint;
 
+@SuppressLint("ViewConstructor")
 public class MapView extends ImageView {
 
+	private Activity parent;
+	private Context context;
 	private Bitmap map;
 
 	private float minX = 0;
@@ -25,6 +33,8 @@ public class MapView extends ImageView {
 	private float gridSpacingY = 10;
 
 	private ScaleGestureDetector mScaleDetector;
+	private GestureDetector mSimpleDetector;
+
 	private float mScaleFactor = 1.f;
 
 	// The ‘active pointer’ is the one currently moving our object.
@@ -34,12 +44,18 @@ public class MapView extends ImageView {
 	private float mPosX = 0;
 	private float mPosY = 0;
 
+	// just one collector allowed
+	private Collector collector = null;
+	public static boolean busy = false;
+
 	private static final String TAG_DUMP = "DUMP";
 	private static final String TAG_SIZE = "SIZE";
 	private static final String TAG_COORD = "COORD";
 
-	public MapView(Context context) {
+	public MapView(Activity parent, Context context) {
 		super(context);
+		this.parent = parent;
+		this.context = context;
 
 		WindowManager wm = (WindowManager) context
 				.getSystemService(Context.WINDOW_SERVICE);
@@ -55,21 +71,17 @@ public class MapView extends ImageView {
 		this.map = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
 				getResources(), R.drawable.freescale), size.x, size.y, false);
 
-		// this.setScaleType(ScaleType.MATRIX);
 		mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
+		mSimpleDetector = new GestureDetector(context, new SingleTapListener());
+
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
 		dumpEvent(ev);
-		int px = (int) (ev.getX() / mScaleFactor - mPosX);
-		int py = (int) (ev.getY() / mScaleFactor - mPosY);
-
-		Log.d(TAG_COORD, "X = " + px);
-		Log.d(TAG_COORD, "Y = " + py);
-
-		// Let the ScaleGestureDetector inspect all events.
+		// Let the scale and simple GestureDetectors inspect all events.
 		mScaleDetector.onTouchEvent(ev);
+		mSimpleDetector.onTouchEvent(ev);
 
 		final int action = ev.getAction();
 		switch (action & MotionEvent.ACTION_MASK) {
@@ -221,6 +233,35 @@ public class MapView extends ImageView {
 			mScaleFactor = Math.max(0.1f, Math.min(mScaleFactor, 5.0f));
 
 			invalidate();
+			return true;
+		}
+	}
+
+	private class SingleTapListener extends
+			GestureDetector.SimpleOnGestureListener {
+
+		@Override
+		public boolean onSingleTapConfirmed(MotionEvent e) {
+			if (!busy) {
+				int px = (int) (e.getX() / mScaleFactor - mPosX);
+				int py = (int) (e.getY() / mScaleFactor - mPosY);
+				Log.d(TAG_COORD, "X = " + px);
+				Log.d(TAG_COORD, "Y = " + py);
+
+				collector = new Collector(parent, new Point(px, py));
+				collector.start();
+				busy = true;
+				try {
+					collector.join();
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+			} else {
+				Toast toast = Toast.makeText(context, "Please wait...",
+						Toast.LENGTH_SHORT);
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.show();
+			}
 			return true;
 		}
 	}

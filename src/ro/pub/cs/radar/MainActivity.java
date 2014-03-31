@@ -18,21 +18,22 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getApplicationContext(), ScanActivity.class);
+				Intent intent = new Intent(getApplicationContext(),
+						ScanActivity.class);
 				startActivity(intent);
 			}
 		});
-		
+
 		Button b2 = (Button) findViewById(R.id.button2);
 		b2.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+				Intent intent = new Intent(getApplicationContext(),
+						MapActivity.class);
 				startActivity(intent);
 			}
 		});
-
 
 	}
 

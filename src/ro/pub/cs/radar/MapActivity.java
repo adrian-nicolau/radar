@@ -13,7 +13,7 @@ public class MapActivity extends Activity {
 		setContentView(R.layout.activity_map);
 
 		FrameLayout fl = (FrameLayout) findViewById(R.id.mapLayout);
-		View map = new MapView(getApplicationContext());
+		View map = new MapView(this, getApplicationContext());
 		fl.addView(map);
 	}
 
