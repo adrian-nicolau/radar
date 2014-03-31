@@ -17,6 +17,7 @@ import android.graphics.Paint;
 public class MapView extends ImageView {
 
 	private Bitmap map;
+
 	private float minX = 0;
 	private float minY = 0;
 	private float maxX, maxY;
@@ -33,6 +34,10 @@ public class MapView extends ImageView {
 	private float mPosX = 0;
 	private float mPosY = 0;
 
+	private static final String TAG_DUMP = "DUMP";
+	private static final String TAG_SIZE = "SIZE";
+	private static final String TAG_COORD = "COORD";
+
 	public MapView(Context context) {
 		super(context);
 
@@ -45,6 +50,8 @@ public class MapView extends ImageView {
 		this.maxX = size.x;
 		this.maxY = size.y;
 
+		Log.d(TAG_SIZE, "(" + size.x + ", " + size.y + ")");
+
 		this.map = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
 				getResources(), R.drawable.freescale), size.x, size.y, false);
 
@@ -55,6 +62,12 @@ public class MapView extends ImageView {
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
 		dumpEvent(ev);
+		int px = (int) (ev.getX() / mScaleFactor - mPosX);
+		int py = (int) (ev.getY() / mScaleFactor - mPosY);
+
+		Log.d(TAG_COORD, "X = " + px);
+		Log.d(TAG_COORD, "Y = " + py);
+
 		// Let the ScaleGestureDetector inspect all events.
 		mScaleDetector.onTouchEvent(ev);
 
@@ -144,7 +157,7 @@ public class MapView extends ImageView {
 				sb.append(";");
 		}
 		sb.append("]");
-		Log.d("Touch", sb.toString());
+		Log.d(TAG_DUMP, sb.toString());
 	}
 
 	@Override
@@ -153,6 +166,7 @@ public class MapView extends ImageView {
 
 		canvas.save();
 		canvas.scale(mScaleFactor, mScaleFactor);
+		canvas.translate(mPosX, mPosY);
 
 		canvas.drawBitmap(this.map, 0, 0, null);
 		this.drawGrid(canvas);
