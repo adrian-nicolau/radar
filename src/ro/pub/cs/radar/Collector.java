@@ -76,6 +76,8 @@ public class Collector extends Thread {
 		writer = new JsonWriter(out);
 		writer.setIndent("  ");
 		writer.beginObject();
+		writer.name("x").value(point.x);
+		writer.name("y").value(point.y);
 	}
 
 	class ScanResultsReceiver extends BroadcastReceiver {
@@ -86,9 +88,7 @@ public class Collector extends Thread {
 
 			try {
 
-				writer.name("x").value(point.x);
-				writer.name("y").value(point.y);
-				writer.name("APs");
+				writer.name("sample" + currentSample);
 
 				writer.beginArray();
 				for (ScanResult result : results) {
