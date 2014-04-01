@@ -2,7 +2,9 @@ package ro.pub.cs.radar;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -11,12 +13,10 @@ import android.graphics.Point;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.Toast;
 import android.graphics.Paint;
 
 @SuppressLint("ViewConstructor")
@@ -46,7 +46,7 @@ public class MapView extends ImageView {
 
 	// just one collector allowed
 	private Collector collector = null;
-	public static boolean busy = false;
+	private static boolean busy = false;
 
 	private static final String TAG_DUMP = "DUMP";
 	private static final String TAG_SIZE = "SIZE";
@@ -237,12 +237,22 @@ public class MapView extends ImageView {
 		}
 	}
 
+	public static synchronized void setBusy(boolean value) {
+		busy = value;
+	}
+
+	public static synchronized boolean getBusy() {
+		return busy;
+	}
+
 	private class SingleTapListener extends
 			GestureDetector.SimpleOnGestureListener {
 
 		@Override
 		public boolean onSingleTapConfirmed(MotionEvent e) {
-			if (!busy) {
+
+			if (getBusy() == false) {
+
 				int px = (int) (e.getX() / mScaleFactor - mPosX);
 				int py = (int) (e.getY() / mScaleFactor - mPosY);
 				Log.d(TAG_COORD, "X = " + px);
@@ -250,17 +260,34 @@ public class MapView extends ImageView {
 
 				collector = new Collector(parent, new Point(px, py));
 				collector.start();
-				busy = true;
+				setBusy(true);
+
 				try {
 					collector.join();
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
+
 			} else {
-				Toast toast = Toast.makeText(context, "Please wait...",
-						Toast.LENGTH_SHORT);
-				toast.setGravity(Gravity.CENTER, 0, 0);
-				toast.show();
+				parent.runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						new AlertDialog.Builder(context)
+								.setTitle("Please be patient..")
+								.setNeutralButton("I promiz U",
+										new DialogInterface.OnClickListener() {
+
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {
+												dialog.cancel();
+											}
+										}).show();
+					}
+				});
+
 			}
 			return true;
 		}

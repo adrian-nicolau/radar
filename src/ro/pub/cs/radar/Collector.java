@@ -4,7 +4,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -26,7 +29,12 @@ public class Collector extends Thread {
 	private List<ScanResult> results;
 	private Point point;
 
-	private final String fileName = "test.json";
+	private static final String file = "test";
+	private static final SimpleDateFormat s = new SimpleDateFormat(
+			"ddMMyyyyhhmmss", Locale.US);
+	private static final String timestamp = s.format(new Date());
+	private static final String fileName = file + timestamp + ".json";
+
 	private int noSamples = 5;
 	private int currentSample = 1;
 
@@ -57,6 +65,7 @@ public class Collector extends Thread {
 	}
 
 	public void setupIO() throws IOException {
+
 		File logFile = new File(Environment.getExternalStorageDirectory()
 				.toString(), fileName);
 		BufferedWriter out = null;
@@ -90,16 +99,22 @@ public class Collector extends Thread {
 				}
 				writer.endArray();
 
-				Toast.makeText(parent.getApplicationContext(),
-						"Done " + currentSample + "/" + noSamples,
-						Toast.LENGTH_SHORT).show();
+				parent.runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						Toast.makeText(parent.getApplicationContext(),
+								"Done " + currentSample + "/" + noSamples,
+								Toast.LENGTH_SHORT).show();
+					}
+				});
 
 				currentSample++;
 				if (currentSample == noSamples + 1) {
 					writer.endObject();
 					writer.close();
 					parent.unregisterReceiver(this);
-					MapView.busy = false;
+					MapView.setBusy(false);
 				} else {
 					manager.startScan();
 				}
