@@ -34,10 +34,14 @@ def parse():
             if bssid.startswith(FSLMARK):
                 bssids.add(bssid)
                 added = 0
+                ct = 0.0
                 for entry in allTogether:
                     if entry["bssid"] == bssid:
                         added += entry["rssi"]
-                meds.append((bssid, added / 5.0))
+                        ct += 1
+                if ct == 0:
+                    ct = 1
+                meds.append((bssid, added / ct))
 
         outcome.append((point['x'], point['y'], meds))
 

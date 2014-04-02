@@ -18,6 +18,8 @@ Ys = [el[1] for el in data]
 
 i = 0
 for values in allRSSIs:
+    print values
+    print Ys
     label = parser.bssids.pop()
     plt.plot(Ys, values, label=label)
     i += 1
