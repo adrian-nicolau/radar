@@ -35,6 +35,14 @@ public class MainActivity extends Activity {
 			}
 		});
 
+		Button b3 = (Button) findViewById(R.id.button3);
+		b3.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				FileChooserDialogFragment df = new FileChooserDialogFragment();
+				df.show(getFragmentManager(), "dialog");
+			}
+		});
+		
+		
 	}
-
 }
