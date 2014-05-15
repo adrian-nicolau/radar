@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import parser
+from random import randint
 
 data = parser.parse()
 
@@ -11,6 +12,10 @@ def getRSSIs(bssid):
         for el in entry_list:
             if el[0] == bssid:
                 RSSIs.append(el[1])
+    if len(RSSIs) < len(data):
+        avg = sum(RSSIs) / len(RSSIs)
+        for _ in range(len(data) - len(RSSIs)):
+            RSSIs.insert(randint(0, len(RSSIs)), avg)
     return RSSIs
 
 if __name__ == "__main__":
