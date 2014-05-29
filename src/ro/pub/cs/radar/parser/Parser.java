@@ -1,4 +1,4 @@
-package ro.pub.cs.radar;
+package ro.pub.cs.radar.parser;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -40,19 +40,18 @@ public class Parser {
 		reader.beginObject();
 
 		while (reader.hasNext()) {
-			reader.nextName();
+			reader.nextName(); // skip "pointx"
 			reader.beginObject();
 
-			reader.nextName();
+			reader.nextName(); // skip "x"
 			int x = reader.nextInt();
-			reader.nextName();
+			reader.nextName(); // skip "y"
 			int y = reader.nextInt();
-			Log.v("json", "x: " + x);
-			Log.v("json", "y: " + y);
 
 			ArrayList<HashMap<String, Integer>> samples = new ArrayList<HashMap<String, Integer>>();
 
-			while (reader.nextName().startsWith("sample")) {
+			while (reader.hasNext()) {
+				reader.nextName(); // skip "samplex"
 
 				HashMap<String, Integer> sample = new HashMap<String, Integer>();
 
@@ -62,7 +61,6 @@ public class Parser {
 
 					reader.nextName();
 					String bssid = reader.nextString();
-
 					reader.nextName();
 					Integer rssi = reader.nextInt();
 
@@ -70,16 +68,16 @@ public class Parser {
 					reader.endObject();
 				}
 				reader.endArray();
-
 				samples.add(sample);
 			}
-
 			points.add(new PointData(x, y, samples));
-
 			reader.endObject();
 		}
-
 		reader.endObject();
+
+		for (int i = 0; i < points.size(); i++) {
+			Log.v("json", points.get(i).getAverage().toString());
+		}
 	}
 
 }

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
+import ro.pub.cs.radar.parser.Parser;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
