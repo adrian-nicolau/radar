@@ -6,9 +6,9 @@ public class AveragePointData {
 
 	private int x;
 	private int y;
-	private HashMap<String, Float> data;
-	
-	public AveragePointData(int x, int y, HashMap<String, Float> averageData) {
+	private HashMap<String, Double> data;
+
+	public AveragePointData(int x, int y, HashMap<String, Double> averageData) {
 		this.x = x;
 		this.y = y;
 		this.data = averageData;
@@ -30,11 +30,11 @@ public class AveragePointData {
 		this.y = y;
 	}
 
-	public HashMap<String, Float> getData() {
+	public HashMap<String, Double> getData() {
 		return data;
 	}
 
-	public void setData(HashMap<String, Float> data) {
+	public void setData(HashMap<String, Double> data) {
 		this.data = data;
 	}
 }

@@ -23,9 +23,8 @@ public class Parser {
 		this.setupIO();
 	}
 
-	public void setupIO() {
-		File logFile = new File(Environment.getExternalStorageDirectory()
-				.toString(), fileName);
+	private void setupIO() {
+		File logFile = new File(Environment.getExternalStorageDirectory().toString(), fileName);
 		BufferedReader in;
 		try {
 			in = new BufferedReader(new FileReader(logFile));

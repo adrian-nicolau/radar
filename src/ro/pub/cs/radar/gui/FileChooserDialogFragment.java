@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
+import ro.pub.cs.radar.Constants;
 import ro.pub.cs.radar.data.Parser;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -15,17 +16,15 @@ import android.os.Environment;
 public class FileChooserDialogFragment extends DialogFragment {
 
 	private String[] mFileList;
-	private File mPath = new File(Environment.getExternalStorageDirectory()
-			.toString());
+	private File mPath = new File(Environment.getExternalStorageDirectory().toString());
 	private String mChosenFile;
-	private static final String FTYPE = ".json";
-	
+
 	private void loadFileList() {
 		if (mPath.exists()) {
 			FilenameFilter filter = new FilenameFilter() {
 				@Override
 				public boolean accept(File dir, String filename) {
-					return filename.contains(FTYPE);
+					return filename.contains(Constants.JSON_EXT);
 				}
 			};
 			mFileList = mPath.list(filter);

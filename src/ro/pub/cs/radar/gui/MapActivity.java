@@ -9,12 +9,12 @@ import java.util.Date;
 import java.util.Locale;
 
 import ro.pub.cs.radar.R;
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.JsonWriter;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.app.Activity;
 
 public class MapActivity extends Activity {
 
@@ -36,15 +36,14 @@ public class MapActivity extends Activity {
 		fl.addView(map);
 	}
 
-	public void setupIO() throws IOException {
+	private void setupIO() throws IOException {
 
 		String file = "test";
 		SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss", Locale.US);
 		String timestamp = s.format(new Date());
 		String fileName = file + timestamp + ".json";
 
-		File logFile = new File(Environment.getExternalStorageDirectory()
-				.toString(), fileName);
+		File logFile = new File(Environment.getExternalStorageDirectory().toString(), fileName);
 
 		if (!logFile.exists()) {
 			logFile.createNewFile();

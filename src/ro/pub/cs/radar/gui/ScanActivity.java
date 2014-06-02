@@ -22,7 +22,6 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,13 +41,10 @@ public class ScanActivity extends Activity {
 	private List<ScanResult> wifiList;
 	private List<String> SSIDs = new ArrayList<String>();
 	private List<String> attributes = new ArrayList<String>();
-
 	private ArrayList<String> history = new ArrayList<String>();
 
 	private Handler mHandler;
 	private int mInterval = 0;
-
-	private static final String TAG = "RSSI";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,18 +52,16 @@ public class ScanActivity extends Activity {
 		setContentView(R.layout.activity_scan);
 
 		lv = (ListView) findViewById(R.id.listView);
-		adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, android.R.id.text1, SSIDs);
+		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
+				android.R.id.text1, SSIDs);
 		lv.setAdapter(adapter);
 
 		lv.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-				AlertDialog.Builder adb = new AlertDialog.Builder(
-						ScanActivity.this);
+				AlertDialog.Builder adb = new AlertDialog.Builder(ScanActivity.this);
 				adb.setTitle("Network Info");
 				adb.setMessage(attributes.get(position));
 				adb.setPositiveButton("Ok", null);
@@ -79,8 +73,7 @@ public class ScanActivity extends Activity {
 
 		mainWifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		receiverWifi = new WifiReceiver();
-		registerReceiver(receiverWifi, new IntentFilter(
-				WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+		registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
 		mainWifi.startScan();
 
 		// refresh information
@@ -108,18 +101,15 @@ public class ScanActivity extends Activity {
 
 	@Override
 	protected void onResume() {
-		registerReceiver(receiverWifi, new IntentFilter(
-				WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+		registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
 		super.onResume();
 	}
 
 	@Override
 	protected void onStop() {
 
-		File logFile = new File(Environment.getExternalStorageDirectory()
-				.toString(), "rssi.txt");
+		File logFile = new File(Environment.getExternalStorageDirectory().toString(), "rssi.txt");
 		BufferedWriter output = null;
-		Log.v(TAG, Environment.getExternalStorageDirectory().toString());
 
 		try {
 			if (!logFile.exists())
@@ -137,8 +127,8 @@ public class ScanActivity extends Activity {
 			}
 		}
 
-		Toast.makeText(getApplicationContext(), "Writing levels to file..",
-				Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), "Writing levels to file..", Toast.LENGTH_SHORT)
+				.show();
 		super.onStop();
 	}
 
@@ -169,8 +159,8 @@ public class ScanActivity extends Activity {
 			wifiList = mainWifi.getScanResults();
 			for (int i = 0; i < wifiList.size(); i++) {
 				String time = sdf.format(cal.getTime());
-				history.add(time + " " + wifiList.get(i).SSID + " "
-						+ wifiList.get(i).BSSID + " " + wifiList.get(i).level);
+				history.add(time + " " + wifiList.get(i).SSID + " " + wifiList.get(i).BSSID + " "
+						+ wifiList.get(i).level);
 				SSIDs.add(wifiList.get(i).SSID);
 				attributes.add(wifiList.get(i).toString().replace(", ", "\n"));
 			}

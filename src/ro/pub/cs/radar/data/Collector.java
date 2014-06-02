@@ -71,7 +71,7 @@ public class Collector extends Thread {
 		manager.startScan();
 	}
 
-	public void setupIO() throws IOException {
+	private void setupIO() throws IOException {
 		writer.name("point" + Collector.instance);
 		writer.beginObject();
 		writer.name("x").value(point.x);
@@ -102,8 +102,8 @@ public class Collector extends Thread {
 					@Override
 					public void run() {
 						Toast.makeText(parent.getApplicationContext(),
-								"Done " + currentSample + "/" + noSamples,
-								Toast.LENGTH_SHORT).show();
+								"Done " + currentSample + "/" + noSamples, Toast.LENGTH_SHORT)
+								.show();
 					}
 				});
 

@@ -8,6 +8,7 @@ import ro.pub.cs.radar.R;
 import ro.pub.cs.radar.data.AveragePointData;
 import ro.pub.cs.radar.data.Collector;
 import ro.pub.cs.radar.data.Parser;
+import ro.pub.cs.radar.data.PointData;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,31 +20,12 @@ public class WhereAmIActivity extends Activity {
 	private HashMap<String, Integer> onlineData;
 	private ArrayList<AveragePointData> offlineData;
 
-	public HashMap<String, Integer> getCurrentData() {
-		return onlineData;
-	}
-
-	public void setOnlineData(HashMap<String, Integer> onlineData) {
-		this.onlineData = onlineData;
-		Log.v("POS", this.onlineData.toString());
-
-		// TODO estimate position
-		setOfflineData();
-		Log.v("EUCLID", onlineData.toString());
-		for (AveragePointData apd : offlineData) {
-			Log.v("EUCLID", apd.getData().toString());
-			// Log.v("EUCLID",
-			// String.valueOf(euclideanDistance(apd.getData())));
-		}
-		// TODO draw point on map
-	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
 
-		// Get current location data
+		// Get data from current location
 		Collector collector = new Collector(this);
 		collector.start();
 
@@ -58,25 +40,38 @@ public class WhereAmIActivity extends Activity {
 		// TODO
 	}
 
+	public void setOnlineData(HashMap<String, Integer> onlineData) {
+		this.onlineData = onlineData;
+		Log.v("POS", this.onlineData.toString());
+
+		// TODO estimate position
+		setOfflineData();
+		Log.v("EUCLID", onlineData.toString());
+		for (AveragePointData apd : offlineData) {
+			Log.v("EUCLID", apd.getData().toString());
+			Log.v("EUCLID", String.valueOf(euclideanDistance(apd.getData())));
+		}
+		// TODO draw point on map
+	}
+
 	private void setOfflineData() {
 		offlineData = new ArrayList<AveragePointData>();
 		for (int i = 0; i < Parser.points.size(); i++) {
-			offlineData.add(new AveragePointData(Parser.points.get(i).x,
-					Parser.points.get(i).y, Parser.points.get(i).getAverage()));
+			PointData pd = Parser.points.get(i);
+			offlineData.add(new AveragePointData(pd.getX(), pd.getY(), pd.getAverage()));
 		}
 	}
 
-	private double euclideanDistance(HashMap<String, Float> offlineData) {
+	private double euclideanDistance(HashMap<String, Double> offlineData) {
 		double distance = 0;
-		for (Map.Entry<String, Float> off : offlineData.entrySet()) {
+		for (Map.Entry<String, Double> off : offlineData.entrySet()) {
 			for (Map.Entry<String, Integer> on : onlineData.entrySet()) {
 				if (off.getKey().equals(on.getKey())) {
-					distance += Math.sqrt(Math.pow(on.getValue(), 2)
-							- Math.pow(off.getValue(), 2));
+					distance += Math.pow(on.getValue() - off.getValue(), 2);
 				}
 			}
 		}
-		return distance;
+		return Math.sqrt(distance);
 	}
 
 }

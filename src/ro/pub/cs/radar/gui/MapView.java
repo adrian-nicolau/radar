@@ -59,8 +59,7 @@ public class MapView extends ImageView {
 		this.parent = parent;
 		this.context = context;
 
-		WindowManager wm = (WindowManager) context
-				.getSystemService(Context.WINDOW_SERVICE);
+		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();
 
 		Point size = new Point();
@@ -70,8 +69,9 @@ public class MapView extends ImageView {
 
 		Log.d(TAG_SIZE, "(" + size.x + ", " + size.y + ")");
 
-		this.map = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-				getResources(), R.drawable.freescale), size.x, size.y, false);
+		this.map = Bitmap.createScaledBitmap(
+				BitmapFactory.decodeResource(getResources(), R.drawable.freescale), size.x, size.y,
+				false);
 
 		mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
 		mSimpleDetector = new GestureDetector(context, new SingleTapListener());
@@ -149,16 +149,15 @@ public class MapView extends ImageView {
 
 	/** Show an event in the LogCat view, for debugging */
 	private void dumpEvent(MotionEvent event) {
-		String names[] = { "DOWN", "UP", "MOVE", "CANCEL", "OUTSIDE",
-				"POINTER_DOWN", "POINTER_UP", "7?", "8?", "9?" };
+		String names[] = { "DOWN", "UP", "MOVE", "CANCEL", "OUTSIDE", "POINTER_DOWN", "POINTER_UP",
+				"7?", "8?", "9?" };
 		StringBuilder sb = new StringBuilder();
 		int action = event.getAction();
 		int actionCode = action & MotionEvent.ACTION_MASK;
 		sb.append("event ACTION_").append(names[actionCode]);
 		if (actionCode == MotionEvent.ACTION_POINTER_DOWN
 				|| actionCode == MotionEvent.ACTION_POINTER_UP) {
-			sb.append("(pid ").append(
-					action >> MotionEvent.ACTION_POINTER_INDEX_SHIFT);
+			sb.append("(pid ").append(action >> MotionEvent.ACTION_POINTER_INDEX_SHIFT);
 			sb.append(")");
 		}
 		sb.append("[");
@@ -225,8 +224,7 @@ public class MapView extends ImageView {
 		}
 	}
 
-	private class ScaleListener extends
-			ScaleGestureDetector.SimpleOnScaleGestureListener {
+	private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
 		@Override
 		public boolean onScale(ScaleGestureDetector detector) {
 			mScaleFactor *= detector.getScaleFactor();
@@ -247,8 +245,7 @@ public class MapView extends ImageView {
 		return busy;
 	}
 
-	private class SingleTapListener extends
-			GestureDetector.SimpleOnGestureListener {
+	private class SingleTapListener extends GestureDetector.SimpleOnGestureListener {
 
 		@Override
 		public boolean onSingleTapConfirmed(MotionEvent e) {
@@ -281,9 +278,7 @@ public class MapView extends ImageView {
 										new DialogInterface.OnClickListener() {
 
 											@Override
-											public void onClick(
-													DialogInterface dialog,
-													int which) {
+											public void onClick(DialogInterface dialog, int which) {
 												dialog.cancel();
 											}
 										}).show();

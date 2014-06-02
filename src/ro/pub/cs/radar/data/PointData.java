@@ -8,11 +8,11 @@ import ro.pub.cs.radar.Constants;
 
 public class PointData {
 
-	public int x;
-	public int y;
-	public ArrayList<HashMap<String, Integer>> samples;
-	public HashMap<String, Integer> sum = new HashMap<String, Integer>();
-	public HashMap<String, Integer> occurrences = new HashMap<String, Integer>();
+	private int x;
+	private int y;
+	private ArrayList<HashMap<String, Integer>> samples;
+	private HashMap<String, Integer> sum = new HashMap<String, Integer>();
+	private HashMap<String, Integer> occurrences = new HashMap<String, Integer>();
 
 	public PointData(int x, int y, ArrayList<HashMap<String, Integer>> samples) {
 		this.x = x;
@@ -20,7 +20,7 @@ public class PointData {
 		this.samples = samples;
 	}
 
-	private void computeSum() {
+	private void getSumWithOccurrences() {
 		for (int i = 0; i < samples.size(); i++) {
 			for (Map.Entry<String, Integer> e : samples.get(i).entrySet()) {
 				String bssid = e.getKey();
@@ -41,26 +41,41 @@ public class PointData {
 		}
 	}
 
-	public HashMap<String, Float> getAverage() {
-		HashMap<String, Float> average = new HashMap<String, Float>();
+	public HashMap<String, Double> getAverage() {
+		HashMap<String, Double> average = new HashMap<String, Double>();
+		this.getSumWithOccurrences();
 
-		computeSum();
 		for (Map.Entry<String, Integer> e : sum.entrySet()) {
 			String bssid = e.getKey();
 			if (bssid.startsWith(Constants.FSL)) {
-				average.put(bssid,
-						((float) e.getValue()) / occurrences.get(bssid));
+				average.put(bssid, ((double) e.getValue()) / occurrences.get(bssid));
 			}
 		}
 
 		return average;
 	}
 
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("x: " + this.x + "\n");
-		sb.append("y: " + this.y + "\n");
+		sb.append("x: " + x + "\n");
+		sb.append("y: " + y + "\n");
 		for (int i = 0; i < samples.size(); i++) {
 			sb.append("sample" + i + "\n");
 			for (Map.Entry<String, Integer> e : samples.get(i).entrySet()) {
