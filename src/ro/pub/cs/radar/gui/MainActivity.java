@@ -1,5 +1,6 @@
-package ro.pub.cs.radar;
+package ro.pub.cs.radar.gui;
 
+import ro.pub.cs.radar.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,7 +43,15 @@ public class MainActivity extends Activity {
 				df.show(getFragmentManager(), "dialog");
 			}
 		});
-		
-		
+
+		Button b4 = (Button) findViewById(R.id.button4);
+		b4.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				Intent intent = new Intent(getApplicationContext(),
+						WhereAmIActivity.class);
+				startActivity(intent);
+			}
+		});
+
 	}
 }

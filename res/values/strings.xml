@@ -12,6 +12,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="button1">Show Available APs</string>
     <string name="button2">View Floor Map</string>
-    <string name="button3">Parse Collected Data</string>
+    <string name="button3">Select Database</string>
+    <string name="button4">Where Am I?</string>
+    <string name="title_activity_where_am_i">WhereAmIActivity</string>
 
 </resources>

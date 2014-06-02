@@ -18,7 +18,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="ro.pub.cs.radar.MainActivity"
+            android:name="ro.pub.cs.radar.gui.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,21 +27,30 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="ro.pub.cs.radar.ScanActivity"
+            android:name="ro.pub.cs.radar.gui.ScanActivity"
             android:label="@string/title_activity_scan"
-            android:parentActivityName="ro.pub.cs.radar.MainActivity" >
+            android:parentActivityName="ro.pub.cs.radar.gui.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ro.pub.cs.radar.MainActivity" />
         </activity>
         <activity
-            android:name="ro.pub.cs.radar.MapActivity"
+            android:name="ro.pub.cs.radar.gui.MapActivity"
             android:label="@string/title_activity_map"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:parentActivityName="ro.pub.cs.radar.MainActivity" >
+            android:parentActivityName="ro.pub.cs.radar.gui.MainActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ro.pub.cs.radar.MainActivity" />
+        </activity>
+        <activity
+            android:name="ro.pub.cs.radar.gui.WhereAmIActivity"
+            android:label="@string/title_activity_where_am_i"
+            android:parentActivityName="ro.pub.cs.radar.gui.MainActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ro.pub.cs.radar.gui.MainActivity" />
         </activity>
     </application>
 

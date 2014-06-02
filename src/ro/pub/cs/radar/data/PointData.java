@@ -1,4 +1,4 @@
-package ro.pub.cs.radar.parser;
+package ro.pub.cs.radar.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;

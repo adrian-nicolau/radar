@@ -1,5 +1,7 @@
-package ro.pub.cs.radar;
+package ro.pub.cs.radar.gui;
 
+import ro.pub.cs.radar.R;
+import ro.pub.cs.radar.data.Collector;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.Display;
@@ -17,7 +20,6 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.graphics.Paint;
 
 @SuppressLint("ViewConstructor")
 public class MapView extends ImageView {

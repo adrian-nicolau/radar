@@ -1,11 +1,10 @@
-package ro.pub.cs.radar;
+package ro.pub.cs.radar.gui;
 
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
-import ro.pub.cs.radar.parser.Parser;
-
+import ro.pub.cs.radar.data.Parser;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;

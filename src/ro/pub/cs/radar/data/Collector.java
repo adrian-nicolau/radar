@@ -1,8 +1,12 @@
-package ro.pub.cs.radar;
+package ro.pub.cs.radar.data;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
+import ro.pub.cs.radar.gui.MapActivity;
+import ro.pub.cs.radar.gui.MapView;
+import ro.pub.cs.radar.gui.WhereAmIActivity;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,7 +21,7 @@ import android.widget.Toast;
 public class Collector extends Thread {
 
 	private Activity parent;
-	private WifiManager manager;
+	private static WifiManager manager;
 	private BroadcastReceiver receiver;
 	private List<ScanResult> results;
 	private Point point;
@@ -28,15 +32,28 @@ public class Collector extends Thread {
 	private static final JsonWriter writer = MapActivity.writer;
 	private static int instance = 0;
 
+	private boolean offline;
+
+	// Constructor for on-line phase
+	public Collector(Activity parent) {
+		this.offline = false;
+		this.parent = parent;
+
+		manager = (WifiManager) parent.getSystemService(Context.WIFI_SERVICE);
+		this.receiver = new OnlineReceiver();
+		parent.registerReceiver(receiver, new IntentFilter(
+				WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+	}
+
+	// Constructor for off-line phase
 	public Collector(Activity parent, Point point) {
 		Collector.instance++;
-
+		this.offline = true;
 		this.parent = parent;
 		this.point = point;
 
-		this.manager = (WifiManager) parent
-				.getSystemService(Context.WIFI_SERVICE);
-		this.receiver = new ScanResultsReceiver();
+		manager = (WifiManager) parent.getSystemService(Context.WIFI_SERVICE);
+		this.receiver = new OfflineReceiver();
 		parent.registerReceiver(receiver, new IntentFilter(
 				WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
 	}
@@ -44,10 +61,12 @@ public class Collector extends Thread {
 	@Override
 	public void run() {
 		// Start scan for available APs
-		try {
-			this.setupIO();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (offline) {
+			try {
+				this.setupIO();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		manager.startScan();
 	}
@@ -59,7 +78,7 @@ public class Collector extends Thread {
 		writer.name("y").value(point.y);
 	}
 
-	class ScanResultsReceiver extends BroadcastReceiver {
+	class OfflineReceiver extends BroadcastReceiver {
 
 		@Override
 		public void onReceive(Context arg0, Intent arg1) {
@@ -100,6 +119,19 @@ public class Collector extends Thread {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	class OnlineReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context arg0, Intent arg1) {
+			results = manager.getScanResults();
+			HashMap<String, Integer> onlineData = new HashMap<String, Integer>();
+			for (int i = 0; i < results.size(); i++) {
+				onlineData.put(results.get(i).BSSID, results.get(i).level);
+			}
+			((WhereAmIActivity) parent).setOnlineData(onlineData);
 		}
 
 	}

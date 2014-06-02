@@ -1,4 +1,4 @@
-package ro.pub.cs.radar.parser;
+package ro.pub.cs.radar.data;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,17 +10,16 @@ import java.util.HashMap;
 
 import android.os.Environment;
 import android.util.JsonReader;
-import android.util.Log;
 
 public class Parser {
 
 	private String fileName;
 	private JsonReader reader;
-	private ArrayList<PointData> points;
+	public static ArrayList<PointData> points;
 
 	public Parser(String fileName) {
 		this.fileName = fileName;
-		this.points = new ArrayList<PointData>();
+		points = new ArrayList<PointData>();
 		this.setupIO();
 	}
 
@@ -74,10 +73,6 @@ public class Parser {
 			reader.endObject();
 		}
 		reader.endObject();
-
-		for (int i = 0; i < points.size(); i++) {
-			Log.v("json", points.get(i).getAverage().toString());
-		}
 	}
 
 }

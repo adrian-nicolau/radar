@@ -1,4 +1,4 @@
-package ro.pub.cs.radar;
+package ro.pub.cs.radar.gui;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -9,11 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import android.net.wifi.ScanResult;
-import android.net.wifi.WifiManager;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
+import ro.pub.cs.radar.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,6 +17,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;

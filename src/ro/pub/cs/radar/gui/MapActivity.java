@@ -1,4 +1,4 @@
-package ro.pub.cs.radar;
+package ro.pub.cs.radar.gui;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import ro.pub.cs.radar.R;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.JsonWriter;
@@ -17,7 +18,7 @@ import android.app.Activity;
 
 public class MapActivity extends Activity {
 
-	protected static JsonWriter writer;
+	public static JsonWriter writer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
