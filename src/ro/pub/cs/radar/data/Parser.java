@@ -15,7 +15,7 @@ public class Parser {
 
 	private String fileName;
 	private JsonReader reader;
-	public static ArrayList<PointData> points;
+	public static ArrayList<PointData> points = null;
 
 	public Parser(String fileName) {
 		this.fileName = fileName;

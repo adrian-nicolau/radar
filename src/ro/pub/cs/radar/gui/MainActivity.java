@@ -1,11 +1,13 @@
 package ro.pub.cs.radar.gui;
 
 import ro.pub.cs.radar.R;
+import ro.pub.cs.radar.data.Parser;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -49,8 +51,13 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View view) {
-				Intent intent = new Intent(getApplicationContext(), WhereAmIActivity.class);
-				startActivity(intent);
+				if (Parser.points == null) {
+					Toast.makeText(getApplicationContext(), "Please select a database first!",
+							Toast.LENGTH_SHORT).show();
+				} else {
+					Intent intent = new Intent(getApplicationContext(), WhereAmIActivity.class);
+					startActivity(intent);
+				}
 			}
 		});
 

@@ -26,7 +26,7 @@ public class MapView extends ImageView {
 
 	private Activity parent;
 	private Context context;
-	private Bitmap map;
+	private Bitmap bitmap;
 
 	private float minX = 0;
 	private float minY = 0;
@@ -69,7 +69,7 @@ public class MapView extends ImageView {
 
 		Log.d(TAG_SIZE, "(" + size.x + ", " + size.y + ")");
 
-		this.map = Bitmap.createScaledBitmap(
+		this.bitmap = Bitmap.createScaledBitmap(
 				BitmapFactory.decodeResource(getResources(), R.drawable.freescale), size.x, size.y,
 				false);
 
@@ -181,10 +181,18 @@ public class MapView extends ImageView {
 		canvas.scale(mScaleFactor, mScaleFactor);
 		canvas.translate(mPosX, mPosY);
 
-		canvas.drawBitmap(this.map, 0, 0, null);
+		canvas.drawBitmap(this.bitmap, 0, 0, null);
 		this.drawGrid(canvas);
 
 		canvas.restore();
+	}
+
+	public Bitmap getBitmap() {
+		return bitmap;
+	}
+
+	public void setBitmap(Bitmap bitmap) {
+		this.bitmap = bitmap;
 	}
 
 	private void drawGrid(Canvas canvas) {

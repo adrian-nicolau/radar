@@ -2,23 +2,27 @@ package ro.pub.cs.radar.gui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import ro.pub.cs.radar.R;
 import ro.pub.cs.radar.data.AveragePointData;
 import ro.pub.cs.radar.data.Collector;
 import ro.pub.cs.radar.data.Parser;
 import ro.pub.cs.radar.data.PointData;
+import ro.pub.cs.radar.positioning.Algorithms;
 import android.app.Activity;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.FrameLayout;
 
 public class WhereAmIActivity extends Activity {
 
 	private HashMap<String, Integer> onlineData;
 	private ArrayList<AveragePointData> offlineData;
+	private MapView mapView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +34,8 @@ public class WhereAmIActivity extends Activity {
 		collector.start();
 
 		FrameLayout fl = (FrameLayout) findViewById(R.id.mapLayout);
-		View map = new MapView(this, this);
-		fl.addView(map);
+		this.mapView = new MapView(this, this);
+		fl.addView(this.mapView);
 	}
 
 	@Override
@@ -46,12 +50,16 @@ public class WhereAmIActivity extends Activity {
 
 		// TODO estimate position
 		setOfflineData();
-		Log.v("EUCLID", onlineData.toString());
-		for (AveragePointData apd : offlineData) {
-			Log.v("EUCLID", apd.getData().toString());
-			Log.v("EUCLID", String.valueOf(euclideanDistance(apd.getData())));
-		}
+		Algorithms a = new Algorithms(onlineData, offlineData);
+		PointF position = a.KNN();
+		Log.v("POS", position.toString());
 		// TODO draw point on map
+		Canvas canvas = new Canvas(this.mapView.getBitmap());
+		Paint paint = new Paint();
+		paint.setColor(Color.BLUE);
+		canvas.drawCircle(position.x, position.y, 20, paint);
+		mapView.invalidate();
+
 	}
 
 	private void setOfflineData() {
@@ -60,18 +68,6 @@ public class WhereAmIActivity extends Activity {
 			PointData pd = Parser.points.get(i);
 			offlineData.add(new AveragePointData(pd.getX(), pd.getY(), pd.getAverage()));
 		}
-	}
-
-	private double euclideanDistance(HashMap<String, Double> offlineData) {
-		double distance = 0;
-		for (Map.Entry<String, Double> off : offlineData.entrySet()) {
-			for (Map.Entry<String, Integer> on : onlineData.entrySet()) {
-				if (off.getKey().equals(on.getKey())) {
-					distance += Math.pow(on.getValue() - off.getValue(), 2);
-				}
-			}
-		}
-		return Math.sqrt(distance);
 	}
 
 }
