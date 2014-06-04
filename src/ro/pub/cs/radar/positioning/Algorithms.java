@@ -1,9 +1,9 @@
 package ro.pub.cs.radar.positioning;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import ro.pub.cs.radar.Constants;
 import ro.pub.cs.radar.data.AveragePointData;
@@ -13,48 +13,53 @@ public class Algorithms {
 
 	private HashMap<String, Integer> onlineData;
 	private ArrayList<AveragePointData> offlineData;
+	private TreeMap<Double, PointF> sortedPointsByDistance;
 
 	public Algorithms(HashMap<String, Integer> onlineData, ArrayList<AveragePointData> offlineData) {
 		this.onlineData = onlineData;
 		this.offlineData = offlineData;
+		this.sortedPointsByDistance = new TreeMap<Double, PointF>();
+		this.sortPointsByDistance();
+	}
+
+	private void sortPointsByDistance() {
+		double distance;
+		for (AveragePointData apd : offlineData) {
+			distance = Common.euclideanDistance(apd.getData(), onlineData);
+			sortedPointsByDistance.put(distance, new PointF(apd.getX(), apd.getY()));
+		}
 	}
 
 	public PointF NN() {
-		PointF result = new PointF();
-		double best = Integer.MAX_VALUE;
-		double curr;
-
-		for (AveragePointData apd : offlineData) {
-			curr = Common.euclideanDistance(apd.getData(), onlineData);
-			if (curr < best) {
-				best = curr;
-				result.set(apd.getX(), apd.getY());
-			}
-		}
-
-		return result;
+		return sortedPointsByDistance.get(sortedPointsByDistance.firstKey());
 	}
 
 	public PointF KNN() {
 		int k = Constants.k;
-		HashMap<Double, PointF> pointsWithDistance = new HashMap<Double, PointF>();
-		double distance;
 		float sumX = 0, sumY = 0;
 
-		for (AveragePointData apd : offlineData) {
-			distance = Common.euclideanDistance(apd.getData(), onlineData);
-			pointsWithDistance.put(distance, new PointF(apd.getX(), apd.getY()));
-		}
-
-		List<Double> sortedKeys = new ArrayList<Double>(pointsWithDistance.keySet());
-		Collections.sort(sortedKeys);
-
 		for (int i = 0; i < k; i++) {
-			sumX += pointsWithDistance.get(sortedKeys.get(i)).x;
-			sumY += pointsWithDistance.get(sortedKeys.get(i)).y;
+			Map.Entry<Double, PointF> e = sortedPointsByDistance.pollFirstEntry();
+			sumX += e.getValue().x;
+			sumY += e.getValue().y;
 		}
 
 		return new PointF(sumX / k, sumY / k);
+	}
+
+	public PointF WKNN() {
+		int k = Constants.k;
+		float sumX = 0, sumY = 0;
+		float denominator = 0;
+
+		for (int i = 0; i < k; i++) {
+			Map.Entry<Double, PointF> e = sortedPointsByDistance.pollFirstEntry();
+			sumX += e.getValue().x / e.getKey();
+			sumY += e.getValue().y / e.getKey();
+			denominator += 1.0 / e.getKey();
+		}
+
+		return new PointF(sumX / denominator, sumY / denominator);
 	}
 
 }

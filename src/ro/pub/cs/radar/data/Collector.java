@@ -16,6 +16,7 @@ import android.graphics.Point;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.util.JsonWriter;
+import android.util.Log;
 import android.widget.Toast;
 
 public class Collector extends Thread {
@@ -131,7 +132,9 @@ public class Collector extends Thread {
 			for (int i = 0; i < results.size(); i++) {
 				onlineData.put(results.get(i).BSSID, results.get(i).level);
 			}
+			Log.v("OnRecv", "here");
 			((WhereAmIActivity) parent).setOnlineData(onlineData);
+			parent.unregisterReceiver(this);
 		}
 
 	}

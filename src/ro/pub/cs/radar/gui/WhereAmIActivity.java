@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.FrameLayout;
 
@@ -24,42 +25,75 @@ public class WhereAmIActivity extends Activity {
 	private ArrayList<AveragePointData> offlineData;
 	private MapView mapView;
 
+	private int mInterval = 5000; // 5 seconds by default, can be changed later
+	private Handler mHandler;
+	private float lastX, lastY;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
 
-		// Get data from current location
-		Collector collector = new Collector(this);
-		collector.start();
-
 		FrameLayout fl = (FrameLayout) findViewById(R.id.mapLayout);
 		this.mapView = new MapView(this, this);
 		fl.addView(this.mapView);
+
+		this.mHandler = new Handler();
+		this.startRepeatingTask();
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		// TODO
+		stopRepeatingTask();
+	}
+
+	// Get data from current location
+	private void getCurrentData() {
+		Collector collector = new Collector(this);
+		collector.start();
+		try {
+			collector.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private Runnable picasso = new Runnable() {
+		@Override
+		public void run() {
+			getCurrentData();
+			mHandler.postDelayed(picasso, mInterval);
+		}
+	};
+
+	private void startRepeatingTask() {
+		picasso.run();
+	}
+
+	private void stopRepeatingTask() {
+		mHandler.removeCallbacks(picasso);
+	}
+
+	private void drawPosition() {
+		Algorithms a = new Algorithms(onlineData, offlineData);
+		PointF position = a.KNN();
+
+		Canvas canvas = new Canvas(this.mapView.getBitmap());
+		Paint paint = new Paint();
+		paint.setColor(Color.BLUE);
+		canvas.drawCircle(position.x, position.y, 15, paint);
+		lastX = position.x;
+		lastY = position.y;
+		mapView.invalidate();
 	}
 
 	public void setOnlineData(HashMap<String, Integer> onlineData) {
 		this.onlineData = onlineData;
 		Log.v("POS", this.onlineData.toString());
 
-		// TODO estimate position
 		setOfflineData();
-		Algorithms a = new Algorithms(onlineData, offlineData);
-		PointF position = a.KNN();
-		Log.v("POS", position.toString());
-		// TODO draw point on map
-		Canvas canvas = new Canvas(this.mapView.getBitmap());
-		Paint paint = new Paint();
-		paint.setColor(Color.BLUE);
-		canvas.drawCircle(position.x, position.y, 20, paint);
-		mapView.invalidate();
-
+		drawPosition();
 	}
 
 	private void setOfflineData() {
