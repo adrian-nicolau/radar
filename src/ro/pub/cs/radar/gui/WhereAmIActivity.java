@@ -21,6 +21,8 @@ import android.widget.FrameLayout;
 
 public class WhereAmIActivity extends Activity {
 
+	public static String algorithm = "Nearest Neighbor";
+
 	private HashMap<String, Integer> onlineData;
 	private ArrayList<AveragePointData> offlineData;
 	private MapView mapView;
@@ -77,7 +79,17 @@ public class WhereAmIActivity extends Activity {
 
 	private void drawPosition() {
 		Algorithms a = new Algorithms(onlineData, offlineData);
-		PointF position = a.KNN();
+		if (algorithm.startsWith("N")) {
+			Log.v("METHOD", "NN");
+			a.NN();
+		} else if (algorithm.startsWith("k")) {
+			Log.v("METHOD", "kNN");
+			a.KNN();
+		} else if (algorithm.startsWith("W")) {
+			Log.v("METHOD", "WkNN");
+			a.WKNN();
+		}
+		PointF position = a.WKNN();
 
 		Canvas canvas = new Canvas(this.mapView.getBitmap());
 		Paint paint = new Paint();

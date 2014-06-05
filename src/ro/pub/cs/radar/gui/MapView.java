@@ -27,6 +27,7 @@ public class MapView extends ImageView {
 	private Activity parent;
 	private Context context;
 	private Bitmap bitmap;
+	public static String customMap = null;
 
 	private float minX = 0;
 	private float minY = 0;
@@ -69,9 +70,14 @@ public class MapView extends ImageView {
 
 		Log.d(TAG_SIZE, "(" + size.x + ", " + size.y + ")");
 
-		this.bitmap = Bitmap.createScaledBitmap(
-				BitmapFactory.decodeResource(getResources(), R.drawable.freescale), size.x, size.y,
-				false);
+		if (customMap == null) {
+			this.bitmap = Bitmap.createScaledBitmap(
+					BitmapFactory.decodeResource(getResources(), R.drawable.freescale), size.x,
+					size.y, false);
+		} else {
+			this.bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeFile(customMap), size.x,
+					size.y, false);
+		}
 
 		mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
 		mSimpleDetector = new GestureDetector(context, new SingleTapListener());

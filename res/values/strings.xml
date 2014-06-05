@@ -9,9 +9,16 @@
     <string name="done">Done</string>
     <string name="hello_world">Hello world!</string>
     <string name="button1">Show Available APs</string>
-    <string name="button2">View Floor Map</string>
-    <string name="button3">Select Database</string>
-    <string name="button4">Where Am I?</string>
+    <string name="button2">Custom Floor Map</string>
+    <string name="button3">View Floor Map</string>
+    <string name="button4">Select Database</string>
+    <string name="button5">Where Am I?</string>
     <string name="title_activity_where_am_i">WhereAmIActivity</string>
+
+    <string-array name="algorithms">
+        <item>Nearest Neighbor</item>
+        <item>k-Nearest Neighbors</item>
+        <item>Weighted k-Nearest Neighbors</item>
+    </string-array>
 
 </resources>
