@@ -26,7 +26,9 @@ public class Algorithms {
 		double distance;
 		for (AveragePointData apd : offlineData) {
 			distance = Common.euclideanDistance(apd.getData(), onlineData);
-			sortedPointsByDistance.put(distance, new PointF(apd.getX(), apd.getY()));
+			if (distance != 0) {
+				sortedPointsByDistance.put(distance, new PointF(apd.getX(), apd.getY()));
+			}
 		}
 	}
 
@@ -40,6 +42,9 @@ public class Algorithms {
 
 		for (int i = 0; i < k; i++) {
 			Map.Entry<Double, PointF> e = sortedPointsByDistance.pollFirstEntry();
+			if (e == null) {
+				return null;
+			}
 			sumX += e.getValue().x;
 			sumY += e.getValue().y;
 		}
@@ -54,6 +59,9 @@ public class Algorithms {
 
 		for (int i = 0; i < k; i++) {
 			Map.Entry<Double, PointF> e = sortedPointsByDistance.pollFirstEntry();
+			if (e == null) {
+				return null;
+			}
 			sumX += e.getValue().x / e.getKey();
 			sumY += e.getValue().y / e.getKey();
 			denominator += 1.0 / e.getKey();

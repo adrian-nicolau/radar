@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 public class WhereAmIActivity extends Activity {
 
@@ -79,25 +80,29 @@ public class WhereAmIActivity extends Activity {
 
 	private void drawPosition() {
 		Algorithms a = new Algorithms(onlineData, offlineData);
+		PointF position = null;
 		if (algorithm.startsWith("N")) {
 			Log.v("METHOD", "NN");
-			a.NN();
+			position = a.NN();
 		} else if (algorithm.startsWith("k")) {
 			Log.v("METHOD", "kNN");
-			a.KNN();
+			position = a.KNN();
 		} else if (algorithm.startsWith("W")) {
 			Log.v("METHOD", "WkNN");
-			a.WKNN();
+			position = a.WKNN();
 		}
-		PointF position = a.WKNN();
 
-		Canvas canvas = new Canvas(this.mapView.getBitmap());
-		Paint paint = new Paint();
-		paint.setColor(Color.BLUE);
-		canvas.drawCircle(position.x, position.y, 15, paint);
-		lastX = position.x;
-		lastY = position.y;
-		mapView.invalidate();
+		if (position != null) {
+			Canvas canvas = new Canvas(this.mapView.getBitmap());
+			Paint paint = new Paint();
+			paint.setColor(Color.BLUE);
+			canvas.drawCircle(position.x, position.y, 15, paint);
+			lastX = position.x;
+			lastY = position.y;
+			mapView.invalidate();
+		} else {
+			Toast.makeText(getApplicationContext(), "Not enough data..", Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	public void setOnlineData(HashMap<String, Integer> onlineData) {
