@@ -20,5 +20,9 @@
         <item>k-Nearest Neighbors</item>
         <item>Weighted k-Nearest Neighbors</item>
     </string-array>
+    <string-array name="methods">
+        <item>Fingerprinting</item>
+        <item>Trilateration</item>
+    </string-array>
 
 </resources>

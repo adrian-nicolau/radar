@@ -18,6 +18,12 @@ import android.net.wifi.WifiManager;
 import android.util.JsonWriter;
 import android.widget.Toast;
 
+/***
+ * Thread class which collects Wi-Fi information from the current location.
+ * 
+ * @author Adrian Nicolau
+ * 
+ */
 public class Collector extends Thread {
 
 	private Activity parent;
@@ -34,7 +40,12 @@ public class Collector extends Thread {
 
 	private boolean offline;
 
-	// Constructor for on-line phase
+	/***
+	 * Constructor for the online phase.
+	 * 
+	 * @param parent
+	 *            the Activity object from which this is called
+	 */
 	public Collector(Activity parent) {
 		this.offline = false;
 		this.parent = parent;
@@ -45,7 +56,14 @@ public class Collector extends Thread {
 				WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
 	}
 
-	// Constructor for off-line phase
+	/***
+	 * Constructor for the offline phase.
+	 * 
+	 * @param parent
+	 *            the Activity object from which this is called
+	 * @param point
+	 *            coordinates of the current location
+	 */
 	public Collector(Activity parent, Point point) {
 		Collector.instance++;
 		this.offline = true;
@@ -60,7 +78,6 @@ public class Collector extends Thread {
 
 	@Override
 	public void run() {
-		// Start scan for available APs
 		if (offline) {
 			try {
 				this.setupIO();
@@ -68,6 +85,7 @@ public class Collector extends Thread {
 				e.printStackTrace();
 			}
 		}
+		// Start scan for available APs
 		manager.startScan();
 	}
 

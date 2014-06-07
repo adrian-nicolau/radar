@@ -2,6 +2,12 @@ package ro.pub.cs.radar.data;
 
 import java.util.HashMap;
 
+/***
+ * Container for the average data computed for a sampled point.
+ * 
+ * @author Adrian Nicolau
+ *
+ */
 public class AveragePointData {
 
 	private int x;

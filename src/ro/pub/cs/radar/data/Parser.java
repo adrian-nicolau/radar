@@ -11,6 +11,12 @@ import java.util.HashMap;
 import android.os.Environment;
 import android.util.JsonReader;
 
+/***
+ * Class that exposes methods for parsing a JSON file created at offline phase.
+ * 
+ * @author Adrian Nicolau
+ * 
+ */
 public class Parser {
 
 	private String fileName;

@@ -54,6 +54,8 @@ public class FileChooserDialogFragment extends DialogFragment {
 		}
 
 		builder.setItems(mFileList, new DialogInterface.OnClickListener() {
+
+			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				mChosenFile = mFileList[which];
 				if (fileType.equals(Constants.JSON_EXT)) {
@@ -65,6 +67,7 @@ public class FileChooserDialogFragment extends DialogFragment {
 					}
 				} else if (fileType.equals(Constants.BMP_EXT)) {
 					MapView.customMap = mPath + "/" + mChosenFile;
+					Constants.FSL = "";
 				}
 			}
 		});

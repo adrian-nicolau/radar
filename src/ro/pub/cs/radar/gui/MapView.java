@@ -153,7 +153,9 @@ public class MapView extends ImageView {
 		return true;
 	}
 
-	/** Show an event in the LogCat view, for debugging */
+	/***
+	 * Display touch information in LogCat
+	 */
 	private void dumpEvent(MotionEvent event) {
 		String names[] = { "DOWN", "UP", "MOVE", "CANCEL", "OUTSIDE", "POINTER_DOWN", "POINTER_UP",
 				"7?", "8?", "9?" };

@@ -6,6 +6,12 @@ import java.util.Map;
 
 import ro.pub.cs.radar.Constants;
 
+/***
+ * Container class for all information fetched about a certain point.
+ * 
+ * @author Adrian Nicolau
+ * 
+ */
 public class PointData {
 
 	private int x;

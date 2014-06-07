@@ -20,21 +20,39 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		Spinner spinner = (Spinner) findViewById(R.id.spinner1);
+		Spinner spinner1 = (Spinner) findViewById(R.id.spinner1);
 		// Create an ArrayAdapter using the string array and a default spinner
 		// layout
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+		ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this,
 				R.array.algorithms, android.R.layout.simple_spinner_item);
 		// Specify the layout to use when the list of choices appears
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
-		spinner.setAdapter(adapter);
+		spinner1.setAdapter(adapter1);
 
-		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 				WhereAmIActivity.algorithm = parent.getItemAtPosition(pos).toString();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+
+		});
+
+		Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
+		ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
+				R.array.methods, android.R.layout.simple_spinner_item);
+		adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner2.setAdapter(adapter2);
+
+		spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 			}
 
 			@Override

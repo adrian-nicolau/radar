@@ -3,12 +3,19 @@ package ro.pub.cs.radar.positioning;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.TreeMap;
 
 import ro.pub.cs.radar.Constants;
 import ro.pub.cs.radar.data.AveragePointData;
 import android.graphics.PointF;
 
+/***
+ * Class that exposes the positioning algorithms.
+ * 
+ * @author Adrian Nicolau
+ * 
+ */
 public class Algorithms {
 
 	private HashMap<String, Integer> onlineData;
@@ -22,6 +29,9 @@ public class Algorithms {
 		this.sortPointsByDistance();
 	}
 
+	/***
+	 * Sort the offline data with regard to the measured RSSI.
+	 */
 	private void sortPointsByDistance() {
 		double distance;
 		for (AveragePointData apd : offlineData) {
@@ -32,10 +42,21 @@ public class Algorithms {
 		}
 	}
 
+	/***
+	 * Nearest Neighbor algorithm. Return the point that minimizes the distance.
+	 */
 	public PointF NN() {
-		return sortedPointsByDistance.get(sortedPointsByDistance.firstKey());
+		try {
+			return sortedPointsByDistance.get(sortedPointsByDistance.firstKey());
+		} catch (NoSuchElementException nsee) {
+			return null;
+		}
 	}
 
+	/***
+	 * k-Nearest Neighbors algorithm. Return the averaged coordinates from the
+	 * closest k points.
+	 */
 	public PointF KNN() {
 		int k = Constants.k;
 		float sumX = 0, sumY = 0;
@@ -52,6 +73,10 @@ public class Algorithms {
 		return new PointF(sumX / k, sumY / k);
 	}
 
+	/***
+	 * Weighted k-Nearest Neighbors algorithm. Return the averaged coordinates
+	 * from the closest k points, but weigh them first according to the sorting.
+	 */
 	public PointF WKNN() {
 		int k = Constants.k;
 		float sumX = 0, sumY = 0;
