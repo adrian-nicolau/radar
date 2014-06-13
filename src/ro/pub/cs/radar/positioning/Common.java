@@ -3,6 +3,8 @@ package ro.pub.cs.radar.positioning;
 import java.util.HashMap;
 import java.util.Map;
 
+import ro.pub.cs.radar.Constants;
+
 public class Common {
 
 	public static double euclideanDistance(HashMap<String, Double> a, HashMap<String, Integer> b) {
@@ -15,6 +17,13 @@ public class Common {
 			}
 		}
 		return Math.sqrt(distance);
+	}
+
+	public static double calculateDistance(double levelInDb, double freqInMHz) {
+		double factor = 10.0 * Constants.n;
+		double exp = ((-1) * Constants.metersMHz * factor / 20.0 - (factor * Math.log10(freqInMHz)) + Math
+				.abs(levelInDb)) / factor;
+		return Math.pow(10.0, exp);
 	}
 
 }

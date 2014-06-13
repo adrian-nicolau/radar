@@ -108,27 +108,30 @@ public class ScanActivity extends Activity {
 	@Override
 	protected void onStop() {
 
-//		File logFile = new File(Environment.getExternalStorageDirectory().toString(), "rssi.txt");
-//		BufferedWriter output = null;
-//
-//		try {
-//			if (!logFile.exists())
-//				logFile.createNewFile();
-//			output = new BufferedWriter(new FileWriter(logFile, true));
-//			for (String s : history)
-//				output.write(s + "\n");
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				output.close();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//		Toast.makeText(getApplicationContext(), "Writing levels to file..", Toast.LENGTH_SHORT)
-//				.show();
+		// File logFile = new
+		// File(Environment.getExternalStorageDirectory().toString(),
+		// "rssi.txt");
+		// BufferedWriter output = null;
+		//
+		// try {
+		// if (!logFile.exists())
+		// logFile.createNewFile();
+		// output = new BufferedWriter(new FileWriter(logFile, true));
+		// for (String s : history)
+		// output.write(s + "\n");
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// } finally {
+		// try {
+		// output.close();
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// }
+		// }
+		//
+		// Toast.makeText(getApplicationContext(), "Writing levels to file..",
+		// Toast.LENGTH_SHORT)
+		// .show();
 		super.onStop();
 	}
 

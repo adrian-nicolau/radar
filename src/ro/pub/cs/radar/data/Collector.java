@@ -7,6 +7,7 @@ import java.util.List;
 import ro.pub.cs.radar.gui.MapActivity;
 import ro.pub.cs.radar.gui.MapView;
 import ro.pub.cs.radar.gui.WhereAmIActivity;
+import ro.pub.cs.radar.positioning.Common;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,6 +17,7 @@ import android.graphics.Point;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.util.JsonWriter;
+import android.util.Log;
 import android.widget.Toast;
 
 /***
@@ -148,6 +150,9 @@ public class Collector extends Thread {
 			HashMap<String, Integer> onlineData = new HashMap<String, Integer>();
 			for (int i = 0; i < results.size(); i++) {
 				onlineData.put(results.get(i).BSSID, results.get(i).level);
+				double dist = Common.calculateDistance(results.get(i).level,
+						results.get(i).frequency);
+				Log.v("DIST", results.get(i).BSSID + ": " + String.valueOf(dist));
 			}
 			((WhereAmIActivity) parent).setOnlineData(onlineData);
 			parent.unregisterReceiver(this);
