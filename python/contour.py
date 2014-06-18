@@ -24,6 +24,7 @@ zi = rbf(xi, yi)
 
 plt.imshow(zi, vmin=z.min(), vmax=z.max(), origin='lower', 
             extent=[x.min(), x.max(), y.min(), y.max()])
+plt.gca().invert_yaxis()
 plt.scatter(x, y, c=z)
 plt.colorbar()
 plt.show()

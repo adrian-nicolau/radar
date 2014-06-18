@@ -1,22 +1,44 @@
 #!/usr/bin/python
 
 import numpy as np
-from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
-import math
+from scipy.optimize import curve_fit
+
+import plotter
+import parser
 
 def func(x, P0, n, d0):
     return P0 - 10 * n * np.log10(x / d0)
 
-xdata = np.linspace(2, 4, 50)
-y = func(xdata, 2.5, 1.3, 0.5)
-ydata = y + 0.2 * np.random.normal(size=len(xdata))
+def computeDistance(xdata, ydata, xref, yref):
+    distanceData = []
+    if len(x) != len(y):
+        print "Error, lens differ!"
+        return
+    for i in range(len(xdata)):
+        distanceData.append(np.sqrt((xdata[i] - xref)**2 + (ydata[i] - yref)**2))
+    return distanceData
 
-popt, pcov = curve_fit(func, xdata, ydata)
+x42 = 612
+y42 = 1063
+
+x = np.array([el[0] for el in plotter.data])
+y = np.array([el[1] for el in plotter.data])
+distanceData = computeDistance(x, y, x42, y42)
+print distanceData
+
+for el in distanceData:
+    if el <= 0:
+        print "Less than ZERO!"
+
+RSSIdata = plotter.getRSSIs(parser.FSLMARK + ":" + "42")
+
+plt.scatter(distanceData, RSSIdata)
+
+popt, pcov = curve_fit(func, distanceData, RSSIdata)
 print popt
 
-ydatanew = [func(x, popt[0], popt[1], popt[2]) for x in xdata]
+curve = [func(x, popt[0], popt[1], popt[2]) for x in distanceData]
 
-plt.plot(xdata, ydata)
-plt.plot(xdata, ydatanew)
+plt.plot(distanceData, curve)
 plt.show()
