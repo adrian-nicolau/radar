@@ -2,7 +2,10 @@ import json
 from pprint import pprint
 
 FSLMARK = '00:17:0f:da:ba'
-#fileName = "nexus4.json"
+CISCO = "48:f8:b3:4e:79:c1"
+DLINK = "c8:d3:a3:06:6e:aa"
+NETGEAR = "00:90:4c:7e:00:6e"
+
 bssids = set()
 
 def parse():
@@ -31,7 +34,7 @@ def parse():
 
         meds = []
         for bssid in allBssids:
-            if bssid.startswith(FSLMARK):
+            if bssid.startswith(FSLMARK) or bssid.startswith(CISCO) or bssid.startswith(DLINK) or bssid.startswith(NETGEAR):
                 bssids.add(bssid)
                 added = 0
                 ct = 0.0
