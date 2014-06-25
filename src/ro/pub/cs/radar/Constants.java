@@ -8,7 +8,7 @@ package ro.pub.cs.radar;
  */
 public class Constants {
 
-	public static String FSL = "00:17:0f:da:ba:";
+	public static String FSL = "00:17:0f:da:ba:4";
 	public static String NETGEAR = "00:90:4c:7e:00:6e";
 	public static String DLINK = "c8:d3:a3:06:6e:aa";
 	public static String CISCO = "48:f8:b3:4e:79:c1";
