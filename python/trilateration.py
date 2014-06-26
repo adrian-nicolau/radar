@@ -33,10 +33,10 @@ fig.gca().add_artist(plt.Circle((constants.xDLINK, constants.yDLINK), 3, color='
 fig.gca().add_artist(plt.Circle((constants.xNETGEAR, constants.yNETGEAR), 3, color='black'))
 
 # draw circles - get radii from ./fit.py
-drawCircle(constants.x42, constants.y42, 252, 'r')
-drawCircle(constants.xCISCO, constants.yCISCO, 138, 'b')
-drawCircle(constants.xDLINK, constants.yDLINK, 769, 'gray')
-drawCircle(constants.xNETGEAR, constants.yNETGEAR, 365, 'g')
+drawCircle(constants.x42, constants.y42, 272, 'r')
+drawCircle(constants.xCISCO, constants.yCISCO, 1128, 'b')
+drawCircle(constants.xDLINK, constants.yDLINK, 473, 'gray')
+drawCircle(constants.xNETGEAR, constants.yNETGEAR, 134, 'g')
 
 plt.gca().invert_yaxis()
 
