@@ -42,7 +42,7 @@ public class WhereAmIActivity extends Activity {
 		fl.addView(this.mapView);
 
 		this.mHandler = new Handler();
-		this.startRepeatingTask();
+		// this.startRepeatingTask();
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class WhereAmIActivity extends Activity {
 	}
 
 	// Get data from current location
-	private void getCurrentData() {
+	public void getCurrentData() {
 		Collector collector = new Collector(this);
 		collector.start();
 		try {

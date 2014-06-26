@@ -266,6 +266,11 @@ public class MapView extends ImageView {
 		@Override
 		public boolean onSingleTapConfirmed(MotionEvent e) {
 
+			if (parent instanceof WhereAmIActivity) {
+				((WhereAmIActivity) parent).getCurrentData();
+				return true;
+			}
+
 			if (getBusy() == false) {
 
 				int px = (int) (e.getX() / mScaleFactor - mPosX);
