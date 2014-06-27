@@ -96,7 +96,7 @@ public class WhereAmIActivity extends Activity {
 			Canvas canvas = new Canvas(this.mapView.getBitmap());
 			Paint paint = new Paint();
 			paint.setColor(Color.BLUE);
-			canvas.drawCircle(position.x, position.y, 15, paint);
+			canvas.drawCircle(position.x, position.y, 13, paint);
 			lastX = position.x;
 			lastY = position.y;
 			mapView.invalidate();
