@@ -7,7 +7,7 @@ from scipy.optimize import curve_fit
 import plotter
 import parser
 import constants
-import trilateration
+#import trilateration
 import sys
 
 def func(x, P0, n, d0):
@@ -29,9 +29,9 @@ distanceData = computeDistance(x, y, constants.x42, constants.y42)
 RSSIdata = plotter.getRSSIs(constants.FSLMARK + ':42')
 popt, pcov = curve_fit(func, distanceData, RSSIdata)
 print popt
-radius = trilateration.revfunc(constants.rssi42, popt[0], popt[1], popt[2])
-print radius
-
+#radius = trilateration.revfunc(constants.rssi42, popt[0], popt[1], popt[2])
+#print radius
+"""
 distanceData = computeDistance(x, y, constants.xCISCO, constants.yCISCO)
 RSSIdata = plotter.getRSSIs(constants.CISCO)
 popt, pcov = curve_fit(func, distanceData, RSSIdata)
@@ -52,9 +52,9 @@ popt, pcov = curve_fit(func, distanceData, RSSIdata)
 print popt
 radius = trilateration.revfunc(constants.rssiNETGEAR, popt[0], popt[1], popt[2])
 print radius
-
+"""
 
 curve = [func(x, popt[0], popt[1], popt[2]) for x in distanceData]
 plt.scatter(distanceData, RSSIdata)
 plt.plot(distanceData, curve)
-#plt.show()
+plt.show()
