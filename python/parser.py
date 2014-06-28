@@ -10,8 +10,8 @@ bssids = set()
 
 def parse():
     global bssids
-    fileName = raw_input("Enter file name: ")
-    fp = open(fileName, 'r')
+    #fileName = raw_input("Enter file name: ")
+    fp = open('final.json', 'r')
     data = json.load(fp)
 
     outcome = []
