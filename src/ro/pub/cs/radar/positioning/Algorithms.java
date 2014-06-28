@@ -95,4 +95,36 @@ public class Algorithms {
 		return new PointF(sumX / denominator, sumY / denominator);
 	}
 
+	/***
+	 * Enhanced Weighted k-Nearest Neighbors algorithm. Similar to WKNN, but k
+	 * changes based on a threshold value for distance. The threshold is 5 *
+	 * sqrt(number of offline points). This means that, in average, any offline
+	 * measured data that differs with 5 dBm from the online should count for
+	 * estimating position.
+	 */
+	public PointF EWKNN() {
+		float sumX = 0, sumY = 0;
+		float denominator = 0;
+		Map.Entry<Double, PointF> e = null;
+
+		// return at least the closest point
+		do {
+			e = sortedPointsByDistance.pollFirstEntry();
+			if (e == null) {
+				break;
+			}
+			sumX += e.getValue().x / e.getKey();
+			sumY += e.getValue().y / e.getKey();
+			denominator += 1.0 / e.getKey();
+		} while (e.getKey() <= Constants.threshold_factor
+				* Math.sqrt(sortedPointsByDistance.size()));
+
+		if (denominator != 0) {
+			return new PointF(sumX / denominator, sumY / denominator);
+		} else {
+			return null;
+		}
+
+	}
+
 }
