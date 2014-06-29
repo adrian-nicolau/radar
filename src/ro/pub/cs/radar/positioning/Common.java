@@ -23,11 +23,4 @@ public class Common {
 		return Math.sqrt(distance);
 	}
 
-	/*
-	 * public static double calculateDistance(double levelInDb, double
-	 * freqInMHz) { double factor = 10.0 * Constants.n; double exp = ((-1) *
-	 * Constants.metersMHz * factor / 20.0 - (factor * Math.log10(freqInMHz)) +
-	 * Math .abs(levelInDb)) / factor; return Math.pow(10.0, exp); }
-	 */
-
 }
