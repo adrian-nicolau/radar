@@ -49,18 +49,6 @@ public class MainActivity extends Activity {
 		adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner2.setAdapter(adapter2);
 
-		spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-			}
-
-		});
-
 		Button APs = (Button) findViewById(R.id.button1);
 		APs.setOnClickListener(new View.OnClickListener() {
 

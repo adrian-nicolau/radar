@@ -1,9 +1,5 @@
 package ro.pub.cs.radar.gui;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,7 +16,6 @@ import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +24,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class ScanActivity extends Activity {
 
@@ -103,36 +97,6 @@ public class ScanActivity extends Activity {
 	protected void onResume() {
 		registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
 		super.onResume();
-	}
-
-	@Override
-	protected void onStop() {
-
-		// File logFile = new
-		// File(Environment.getExternalStorageDirectory().toString(),
-		// "rssi.txt");
-		// BufferedWriter output = null;
-		//
-		// try {
-		// if (!logFile.exists())
-		// logFile.createNewFile();
-		// output = new BufferedWriter(new FileWriter(logFile, true));
-		// for (String s : history)
-		// output.write(s + "\n");
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// } finally {
-		// try {
-		// output.close();
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
-		// }
-		//
-		// Toast.makeText(getApplicationContext(), "Writing levels to file..",
-		// Toast.LENGTH_SHORT)
-		// .show();
-		super.onStop();
 	}
 
 	Runnable mStatusChecker = new Runnable() {

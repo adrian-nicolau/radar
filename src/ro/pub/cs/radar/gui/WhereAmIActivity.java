@@ -90,6 +90,9 @@ public class WhereAmIActivity extends Activity {
 		} else if (algorithm.startsWith("W")) {
 			Log.v("METHOD", "WkNN");
 			position = a.WKNN();
+		} else if (algorithm.startsWith("E")) {
+			Log.v("METHOD", "EWkNN");
+			position = a.EWKNN();
 		}
 
 		if (position != null) {

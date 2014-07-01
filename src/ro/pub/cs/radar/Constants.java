@@ -8,6 +8,7 @@ package ro.pub.cs.radar;
  */
 public class Constants {
 
+	public static boolean FSL_MODE = true;
 	public static String FSL = "00:17:0f:da:ba:4";
 	public static String NETGEAR = "00:90:4c:7e:00:6e";
 	public static String DLINK = "c8:d3:a3:06:6e:aa";
@@ -15,8 +16,8 @@ public class Constants {
 	public static final String JSON_EXT = ".json";
 	public static final String BMP_EXT = ".bmp";
 	public static final int k = 3;
-	public static final int threshold_factor = 5; // dBm
+	public static final int threshold_factor = 20; // dBm
 	public static final double metersMHz = -27.55;
-	public static final double n = 3.0;
+	public static final double n = 3.0; // path loss exponent
 
 }

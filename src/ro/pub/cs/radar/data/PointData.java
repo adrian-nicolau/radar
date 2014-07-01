@@ -53,7 +53,9 @@ public class PointData {
 
 		for (Map.Entry<String, Integer> e : sum.entrySet()) {
 			String bssid = e.getKey();
-			if (bssid.startsWith(Constants.FSL) || bssid.equalsIgnoreCase(Constants.CISCO)
+			if (Constants.FSL_MODE == false) {
+				average.put(bssid, ((double) e.getValue()) / occurrences.get(bssid));
+			} else if (bssid.startsWith(Constants.FSL) || bssid.equalsIgnoreCase(Constants.CISCO)
 					|| bssid.equalsIgnoreCase(Constants.DLINK)
 					|| bssid.equalsIgnoreCase(Constants.NETGEAR)) {
 				average.put(bssid, ((double) e.getValue()) / occurrences.get(bssid));

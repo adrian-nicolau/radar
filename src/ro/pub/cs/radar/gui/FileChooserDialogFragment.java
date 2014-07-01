@@ -67,7 +67,7 @@ public class FileChooserDialogFragment extends DialogFragment {
 					}
 				} else if (fileType.equals(Constants.BMP_EXT)) {
 					MapView.customMap = mPath + "/" + mChosenFile;
-					Constants.FSL = "";
+					Constants.FSL_MODE = false;
 				}
 			}
 		});
